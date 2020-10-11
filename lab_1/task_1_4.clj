@@ -1,24 +1,24 @@
 (ns task-1-4.core
   (:gen-class))
 
-(defn connect_symbol_alphabet [symbol alphabet]
-  (map #(concat % symbol) (filter #(not= symbol (list (last (last (list %))))) alphabet)))
-;(connect_symbol_alphabet '("d") '(("a" "b") ("b" "c") ("c" "d")))
+(defn connect-symbol-alphabet [symbol alphabet]
+  (map #(concat symbol %) (filter #(not= symbol [(first %)]) alphabet)))
+;(connect-symbol-alphabet '("d") '(("a" "b") ("b" "c") ("d" "c")))
 
-(defn combine_alphabets [alphabet original_alphabet]
-  (reduce concat (map #(connect_symbol_alphabet % alphabet) original_alphabet)))
-;(combine_alphabets '(("a") ("b") ("c")) '(("a") ("b") ("c")))
+(defn combine-alphabets [alphabet original-alphabet]
+  (reduce concat (map #(connect-symbol-alphabet % alphabet) original-alphabet)))
+;(combine-alphabets '(("a") ("b") ("c")) '(("a") ("b") ("c")))
 
-(defn count_n [alphabet original_alphabet n]
+(defn count-n [alphabet original-alphabet n]
   (if (> n 1)
-    (count_n (combine_alphabets alphabet original_alphabet) original_alphabet (dec n))
+    (count-n (combine-alphabets alphabet original-alphabet) original-alphabet (dec n))
     alphabet))
-;(count_n '(("a") ("b") ("c")) '(("a") ("b") ("c")) 3)
+;(count-n '(("a") ("b") ("c")) '(("a") ("b") ("c")) 3)
 
-(defn list_to_list [alphabet]
+(defn list-to-list [alphabet]
   (map #(cons % '()) alphabet))
-;(list_to_list '("a" "b" "c"))
+;(list-to-list '("a" "b" "c"))
 
-(defn task_1_4 [alphabet n]
-  (count_n (list_to_list alphabet) (list_to_list alphabet) n))
-;(task_1_4 '("a" 1 :b) 2)
+(defn task-1-4 [alphabet n]
+  (count-n (list-to-list alphabet) (list-to-list alphabet) n))
+;(task-1-4 '("a" 1 :b) 2)
