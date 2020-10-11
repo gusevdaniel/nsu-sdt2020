@@ -1,40 +1,40 @@
 (ns task-1-2.core
   (:gen-class))
 
-(defn connect_symbol_alphabet_rec 
+(defn connect-symbol-alphabet-rec 
   ([symbol alphabet acc]
   (if (> (count alphabet) 0)
-    (if (= symbol (list (last (last (list (first alphabet))))))
+    (if (= symbol [(first (first alphabet))])
       (recur symbol (rest alphabet) acc)
-      (recur symbol (rest alphabet) (concat acc (list (concat (first alphabet) symbol)))))
+      (recur symbol (rest alphabet) (concat acc (list (concat symbol (first alphabet))))))
     acc))
-  ([symbol alphabet] (connect_symbol_alphabet_rec symbol alphabet '())))
-;(connect_symbol_alphabet_rec '("d") '(("a" "b") ("b" "c") ("c" "d")))
+  ([symbol alphabet] (connect-symbol-alphabet-rec symbol alphabet '())))
+;(connect-symbol-alphabet-rec '("d") '(("a" "b") ("b" "c") ("d" "c")))
 
-(defn combine_alphabets_rec 
-  ([alphabet original_alphabet acc]
-   (if (> (count original_alphabet) 0)
-     (recur alphabet (rest original_alphabet) (concat acc (connect_symbol_alphabet_rec (first original_alphabet) alphabet )))
+(defn combine-alphabets-rec 
+  ([alphabet original-alphabet acc]
+   (if (> (count original-alphabet) 0)
+     (recur alphabet (rest original-alphabet) (concat acc (connect-symbol-alphabet-rec (first original-alphabet) alphabet )))
      acc))
-  ([alphabet original_alphabet] (combine_alphabets_rec alphabet original_alphabet '())))
-;(combine_alphabets_rec '(("a") ("b") ("c")) '(("a") ("b") ("c")))
+  ([alphabet original-alphabet] (combine-alphabets-rec alphabet original-alphabet '())))
+;(combine-alphabets-rec '(("a") ("b") ("c")) '(("a") ("b") ("c")))
 
-(defn count_n_rec
-  ([alphabet original_alphabet n acc]
+(defn count-n-rec
+  ([alphabet original-alphabet n acc]
    (if (> n 1)
-     (recur alphabet original_alphabet (dec n) (combine_alphabets_rec acc original_alphabet))
+     (recur alphabet original-alphabet (dec n) (combine-alphabets-rec acc original-alphabet))
      acc))
-  ([alphabet original_alphabet n] (count_n_rec alphabet original_alphabet n alphabet)))
-;(count_n_rec '(("a") ("b") ("c")) '(("a") ("b") ("c")) 3)
+  ([alphabet original-alphabet n] (count-n-rec alphabet original-alphabet n alphabet)))
+;(count-n-rec '(("a") ("b") ("c")) '(("a") ("b") ("c")) 3)
 
-(defn list_to_list_rec
+(defn list-to-list-rec
   ([alphabet acc]
    (if (> (count alphabet) 0)
      (recur (rest alphabet) (concat acc (list (list (first alphabet)))))
      acc))
-  ([alphabet] (list_to_list_rec alphabet '())))
-;(list_to_list_rec '("a" "b" "c"))
+  ([alphabet] (list-to-list-rec alphabet '())))
+;(list-to-list-rec '("a" "b" "c"))
 
-(defn task_1_2 [alphabet n]
-  (count_n_rec (list_to_list_rec alphabet) (list_to_list_rec alphabet) n))
-;(task_1_2 '("a" 1 :b) 2)
+(defn task-1-2 [alphabet n]
+  (count-n-rec (list-to-list-rec alphabet) (list-to-list-rec alphabet) n))
+;(task-1-2 '("a" 1 :b) 2)
