@@ -13,7 +13,7 @@
       result)))
 
 (defn my-filter [f coll number-futures]
-  (loop [heavy-f (heavy 100 f)]
+  (let [heavy-f (heavy 100 f)]
     (->>
      (delimiter coll number-futures)
      (map #(future (doall (filter heavy-f %))))
