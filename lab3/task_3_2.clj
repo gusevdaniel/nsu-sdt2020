@@ -6,18 +6,12 @@
     (Thread/sleep sleep)
     (apply f coll)))
 
-(defn delimiter [number-colls coll]
-  (loop [new-coll coll, size-coll (/ (count coll) number-colls), result []]
-    (if (> (count new-coll) 0)
-      (recur (drop size-coll new-coll) size-coll (conj result (take size-coll new-coll)))
-      result)))
-
 (defn my-lazy-filter [f coll number-futures future_size]
    (lazy-cat
     (let [batch (take (* number-futures future_size) coll)]
       (->>
        batch
-       (partition-all number-futures)
+       (partition-all (/ (count batch) number-futures))
        (map #(future (doall (filter f %))))
        (doall)
        (map deref)
@@ -37,7 +31,6 @@
     (time (doall (my-lazy-filter heavy-f coll 1 future_size)))
     (time (doall (my-lazy-filter heavy-f coll 5 future_size)))
     (time (doall (my-lazy-filter heavy-f coll 10 future_size)))
-    (time (count (doall (my-lazy-filter heavy-f coll 10 future_size))))
     (println "For endless sequence")
     (time (doall (take true-elements (filter heavy-f (range)))))
     (time (doall (take true-elements (my-lazy-filter heavy-f (range) 1 future_size))))
